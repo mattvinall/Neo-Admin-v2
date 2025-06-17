@@ -19,7 +19,7 @@ export async function GET() {
 
     return NextResponse.json({ users });
   } catch (error) {
-    console.error("Error listing users:", error);
+    console.error("Error listing users test:", error);
     // Type-safe error handling
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
