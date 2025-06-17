@@ -1,0 +1,27 @@
+name: Deploy Firebase Functions
+
+on:
+  push:
+    branches:
+      - main # Or whatever your main branch is called
+
+jobs:
+  deploy:
+    name: Build and Deploy Functions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies for Functions
+        run: npm --prefix functions install
+
+      - name: Build Functions TypeScript
+        run: npm --prefix functions run build
+
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-tools-action@v2
+        with:
+          args: deploy --only functions
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
