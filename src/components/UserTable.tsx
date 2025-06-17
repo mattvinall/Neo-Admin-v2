@@ -1,6 +1,7 @@
 "use client";
 
 import type { User } from "@/types";
+import Image from "next/image"; // Import the Next.js Image component
 
 interface UserTableProps {
   users: User[];
@@ -10,6 +11,7 @@ export function UserTable({ users }: UserTableProps) {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-border">
+        {/* ... table head remains the same ... */}
         <thead className="bg-muted/50">
           <tr>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Name</th>
@@ -26,7 +28,13 @@ export function UserTable({ users }: UserTableProps) {
                   <div className="flex items-center">
                     <div className="flex-shrink-0 h-10 w-10">
                       {user.photoURL ? (
-                        <img className="h-10 w-10 rounded-full" src={user.photoURL} alt="" />
+                        <Image
+                          className="h-10 w-10 rounded-full"
+                          src={user.photoURL}
+                          alt={user.displayName || 'User avatar'}
+                          width={40}
+                          height={40}
+                        />
                       ) : (
                         <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
                           <span className="text-sm font-medium text-muted-foreground">
