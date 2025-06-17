@@ -8,20 +8,28 @@ on:
 jobs:
   deploy:
     name: Build and Deploy Functions
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Use a standard Linux runner
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup Node.js version 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
       - name: Install Dependencies for Functions
+        # This runs 'npm install' inside the 'functions' directory
         run: npm --prefix functions install
 
       - name: Build Functions TypeScript
+        # This runs 'npm run build' inside the 'functions' directory
         run: npm --prefix functions run build
 
+      - name: Install Firebase CLI
+        # This installs the firebase-tools package globally on the runner
+        run: npm install -g firebase-tools
+
       - name: Deploy to Firebase
-        uses: w9jds/firebase-tools-action@v2
-        with:
-          args: deploy --only functions
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        # This runs the deploy command using the FIREBASE_TOKEN secret you created
+        run: firebase deploy --only functions --token "${{ secrets.FIREBASE_TOKEN }}"
